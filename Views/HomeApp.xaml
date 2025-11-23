@@ -6,7 +6,7 @@
              NavigationPage.HasNavigationBar="False"
              BackgroundColor="#F0F2F5">
 
-    <Grid RowDefinitions="Auto, Auto, Auto, *" Padding="20" RowSpacing="20">
+    <Grid RowDefinitions="Auto, Auto, Auto, Auto, Auto, *" Padding="20" RowSpacing="15">
 
         <Label x:Name="lblBoasVindas" Grid.Row="0" Text="Olá..."
                FontSize="28" TextColor="#1c1c1c" FontAttributes="Bold" Margin="5,0,0,0"/>
@@ -16,13 +16,26 @@
                 <Entry x:Name="txtCidade" Grid.Column="0" Placeholder="Digite a cidade (ex: Jaú)"
                        TextColor="#333" PlaceholderColor="#999" />
                 <ImageButton Grid.Column="1" Source="lupa.png" 
-                             HeightRequest="10" WidthRequest="10" Clicked="OnBuscarClicked"/>
+                             HeightRequest="25" WidthRequest="25" Clicked="OnBuscarClicked"/>
             </Grid>
         </Frame>
 
-        <Frame Grid.Row="2" CornerRadius="25" HasShadow="True" BackgroundColor="#6200EE" Padding="20" BorderColor="Transparent">
-            <VerticalStackLayout Spacing="8">
+        <Button Grid.Row="2"
+                Text="📍 Usar minha localização"
+                TextColor="#6200EE"
+                BackgroundColor="Transparent"
+                FontSize="14"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                HeightRequest="40"
+                Clicked="LocalizacaoClicked"/>
 
+        <Frame Grid.Row="3" CornerRadius="10" HasShadow="False" BackgroundColor="#EDE7F6" Padding="10" BorderColor="Transparent">
+            <Label x:Name="lblCoordenadasLocationGPS" Text="Lat: -- | Lon: --" TextColor="#6200EE" FontSize="12" HorizontalOptions="Center"/>
+        </Frame>
+
+        <Frame Grid.Row="4" CornerRadius="25" HasShadow="True" BackgroundColor="#6200EE" Padding="20" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="8">
                 <Label x:Name="lblCidade" Text="---" TextColor="White" FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"/>
                 <Label x:Name="lblCoordenadas" Text="Lat: -- | Lon: --" TextColor="#B39DDB" FontSize="12" HorizontalOptions="Center"/>
                 <Label x:Name="lblTemperatura" Text="--°C" TextColor="White" FontSize="60" FontAttributes="Bold" HorizontalOptions="Center"/>
@@ -35,17 +48,15 @@
                         <Label Text="☀️ Nascer/Pôr do Sol" TextColor="#B39DDB" FontSize="12" HorizontalOptions="Center"/>
                         <Label x:Name="lblSol" Text="--:-- / --:--" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center"/>
                     </VerticalStackLayout>
-
                     <VerticalStackLayout HorizontalOptions="Center">
                         <Label Text="💨 Vento" TextColor="#B39DDB" FontSize="12" HorizontalOptions="Center"/>
                         <Label x:Name="lblVento" Text="-- km/h" TextColor="White" FontSize="16" FontAttributes="Bold" HorizontalOptions="Center"/>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
-
             </VerticalStackLayout>
         </Frame>
 
-        <VerticalStackLayout Grid.Row="3" Spacing="10">
+        <VerticalStackLayout Grid.Row="5" Spacing="10">
             <Label Text="Histórico Recente" FontAttributes="Bold" TextColor="#555" Margin="5,0"/>
             <CollectionView x:Name="listaHistorico">
                 <CollectionView.ItemTemplate>
