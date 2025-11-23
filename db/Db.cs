@@ -13,7 +13,6 @@ namespace MauiAppProva2.db
                 return;
 
             var caminhoBanco = Path.Combine(FileSystem.AppDataDirectory, "database.db3");
-
             _conexao = new SQLiteAsyncConnection(caminhoBanco);
 
             await _conexao.CreateTableAsync<Usuario>();
@@ -34,29 +33,31 @@ namespace MauiAppProva2.db
                                 .FirstOrDefaultAsync();
         }
 
-
         public async Task<int> AdicionarHistorico(Historico h)
         {
             await Init();
             return await _conexao.InsertAsync(h);
         }
 
-        public async Task<List<Historico>> GetHistorico()
+        public async Task<List<Historico>> GetHistorico(int idUsuario)
         {
             await Init();
             return await _conexao.Table<Historico>()
+                                .Where(h => h.IdUsuario == idUsuario) 
                                 .OrderByDescending(x => x.DataConsulta)
                                 .ToListAsync();
         }
 
-        public async Task<List<Historico>> GetHistoricoFiltrado(DateTime inicio, DateTime fim, string cidade = null)
+        public async Task<List<Historico>> GetHistoricoFiltrado(int idUsuario, DateTime inicio, DateTime fim, string cidade = null)
         {
             await Init();
 
             DateTime fimDoDia = fim.Date.AddDays(1).AddTicks(-1);
 
             var query = _conexao.Table<Historico>()
-                                .Where(h => h.DataConsulta >= inicio.Date && h.DataConsulta <= fimDoDia);
+                                .Where(h => h.IdUsuario == idUsuario && 
+                                            h.DataConsulta >= inicio.Date &&
+                                            h.DataConsulta <= fimDoDia);
 
             if (!string.IsNullOrEmpty(cidade))
             {

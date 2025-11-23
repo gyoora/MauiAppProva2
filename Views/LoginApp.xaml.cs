@@ -32,7 +32,7 @@ public partial class LoginApp : ContentPage
 
             if (usuarioExiste != null)
             {
-                Application.Current.MainPage = new NavigationPage(new HomeApp(usuarioExiste.Nome));
+                Application.Current.MainPage = new NavigationPage(new HomeApp(usuarioExiste));
             }
             else
             {

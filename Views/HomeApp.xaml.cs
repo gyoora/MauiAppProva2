@@ -7,10 +7,17 @@ namespace MauiAppProva2.Views;
 
 public partial class HomeApp : ContentPage
 {
-    public HomeApp(string nomeUsuario)
+    private Usuario _usuarioLogado;
+
+    public HomeApp(Usuario usuario)
     {
         InitializeComponent();
-        lblBoasVindas.Text = $"Olá, {nomeUsuario}!";
+
+        _usuarioLogado = usuario;
+        lblBoasVindas.Text = $"Olá, {usuario.Nome}!";
+
+        dtpInicio.Date = DateTime.Now;
+        dtpFim.Date = DateTime.Now;
     }
 
     protected override async void OnAppearing()
@@ -35,13 +42,9 @@ public partial class HomeApp : ContentPage
 
                     string tempFormatada = "";
                     if (t.temp_max.HasValue)
-                    {
                         tempFormatada = $"{t.temp_max.Value.ToString("F0")}°C";
-                    }
                     else
-                    {
                         tempFormatada = "--°C";
-                    }
 
                     lblTemperatura.Text = tempFormatada;
                     lblDescricao.Text = t.description;
@@ -55,6 +58,7 @@ public partial class HomeApp : ContentPage
 
                     Historico novoItem = new Historico
                     {
+                        IdUsuario = _usuarioLogado.Id,
                         Cidade = txtCidade.Text.ToUpper(),
                         DataConsulta = DateTime.Now,
                         Temperatura = tempFormatada,
@@ -120,7 +124,9 @@ public partial class HomeApp : ContentPage
 
             if (place != null)
             {
-                txtCidade.Text = place.Locality;
+                txtCidade.Text = place.Locality ?? place.AdminArea ?? "Local Desconhecido";
+
+                OnBuscarClicked(this, EventArgs.Empty);
             }
         }
         catch (Exception ex)
@@ -134,7 +140,7 @@ public partial class HomeApp : ContentPage
         try
         {
             Db banco = new Db();
-            var lista = await banco.GetHistorico();
+            var lista = await banco.GetHistorico(_usuarioLogado.Id);
             listaHistorico.ItemsSource = lista;
         }
         catch (Exception ex)
@@ -150,7 +156,7 @@ public partial class HomeApp : ContentPage
             DateTime dataInicio = dtpInicio.Date;
             DateTime dataFim = dtpFim.Date;
 
-            string cidadeFiltro = txtFiltroCidade.Text;
+            string cidadeFiltro = txtFiltroCidade.Text.Trim();
 
             if (dataInicio > dataFim)
             {
@@ -159,14 +165,13 @@ public partial class HomeApp : ContentPage
             }
 
             Db banco = new Db();
-
-            var listaFiltrada = await banco.GetHistoricoFiltrado(dataInicio, dataFim, cidadeFiltro);
+            var listaFiltrada = await banco.GetHistoricoFiltrado(_usuarioLogado.Id, dataInicio, dataFim, cidadeFiltro);
 
             listaHistorico.ItemsSource = listaFiltrada;
 
             if (listaFiltrada.Count == 0)
             {
-                await DisplayAlert("Aviso", "Nenhum histórico encontrado com esses filtros.", "OK");
+                await DisplayAlert("Aviso", "Nenhum registro encontrado.", "OK");
             }
         }
         catch (Exception ex)
@@ -177,10 +182,7 @@ public partial class HomeApp : ContentPage
 
     private async void OnLimparFiltroClicked(object sender, EventArgs e)
     {
-        // Limpa o campo de texto
         txtFiltroCidade.Text = string.Empty;
-
-        // Reseta as datas para hoje
         dtpInicio.Date = DateTime.Now;
         dtpFim.Date = DateTime.Now;
 
