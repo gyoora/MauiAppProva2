@@ -23,7 +23,7 @@ namespace MauiAppProva2.Services
 
                     var rascunho = JObject.Parse(json);
 
-                    DateTime time = new();
+                    DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
                     DateTime sunrise = time.AddSeconds((double)rascunho["sys"]["sunrise"]).ToLocalTime();
                     DateTime sunset = time.AddSeconds((double)rascunho["sys"]["sunset"]).ToLocalTime();
 
@@ -37,8 +37,8 @@ namespace MauiAppProva2.Services
                         temp_max = (double)rascunho["main"]["temp_max"],
                         speed = (double)rascunho["wind"]["speed"],
                         visibility = (int)rascunho["visibility"],
-                        sunrise = sunrise.ToString(),
-                        sunset = sunset.ToString(),
+                        sunrise = sunrise.ToString("HH:mm"),
+                        sunset = sunset.ToString("HH:mm"),
                     };
                 }
             }

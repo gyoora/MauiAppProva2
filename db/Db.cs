@@ -17,21 +17,54 @@ namespace MauiAppProva2.db
             _conexao = new SQLiteAsyncConnection(caminhoBanco);
 
             await _conexao.CreateTableAsync<Usuario>();
+            await _conexao.CreateTableAsync<Historico>();
         }
 
         public async Task<int> SalvarUsuarioAsync(Usuario usuario)
         {
-            await Init(); 
+            await Init();
             return await _conexao.InsertAsync(usuario);
         }
 
         public async Task<Usuario> GetUsuarioAsync(string email, string senha)
         {
             await Init();
-
             return await _conexao.Table<Usuario>()
-                .Where(usuario => usuario.Email == email && usuario.Senha == senha)
-                .FirstOrDefaultAsync();
+                                .Where(u => u.Email == email && u.Senha == senha)
+                                .FirstOrDefaultAsync();
+        }
+
+
+        public async Task<int> AdicionarHistorico(Historico h)
+        {
+            await Init();
+            return await _conexao.InsertAsync(h);
+        }
+
+        public async Task<List<Historico>> GetHistorico()
+        {
+            await Init();
+            return await _conexao.Table<Historico>()
+                                .OrderByDescending(x => x.DataConsulta)
+                                .ToListAsync();
+        }
+
+        public async Task<List<Historico>> GetHistoricoFiltrado(DateTime inicio, DateTime fim, string cidade = null)
+        {
+            await Init();
+
+            DateTime fimDoDia = fim.Date.AddDays(1).AddTicks(-1);
+
+            var query = _conexao.Table<Historico>()
+                                .Where(h => h.DataConsulta >= inicio.Date && h.DataConsulta <= fimDoDia);
+
+            if (!string.IsNullOrEmpty(cidade))
+            {
+                query = query.Where(h => h.Cidade.ToLower().Contains(cidade.ToLower()));
+            }
+
+            return await query.OrderByDescending(x => x.DataConsulta)
+                              .ToListAsync();
         }
     }
 }
