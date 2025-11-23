@@ -2,10 +2,10 @@ namespace MauiAppProva2.Views;
 
 public partial class LoginApp : ContentPage
 {
-	public LoginApp()
-	{
-		InitializeComponent();
-	}
+    public LoginApp()
+    {
+        InitializeComponent();
+    }
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
@@ -16,6 +16,7 @@ public partial class LoginApp : ContentPage
     {
         string email = txtEmailLogin.Text;
         string senha = txtSenhaLogin.Text;
+
 
         if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(senha))
         {
@@ -31,17 +32,16 @@ public partial class LoginApp : ContentPage
 
             if (usuarioExiste != null)
             {
-                Application.Current.MainPage = new NavigationPage(new HomeApp());
+                Application.Current.MainPage = new NavigationPage(new HomeApp(usuarioExiste.Nome));
             }
             else
             {
                 await DisplayAlert("Ops!", "Email ou senha incorretos.", "OK");
             }
-
         }
         catch (Exception ex)
         {
             await DisplayAlert("Erro", $"Ocorreu um erro: {ex.Message}", "OK");
         }
     }
-}   
+}

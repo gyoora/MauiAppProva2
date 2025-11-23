@@ -2,11 +2,87 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppProva2.Views.HomeApp"
-             Title="HomeApp">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Previsão do Tempo"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F0F2F5">
+
+    <Grid RowDefinitions="Auto, Auto, Auto, *" Padding="20" RowSpacing="20">
+
+        <Label x:Name="lblBoasVindas"
+               Grid.Row="0"
+               Text="Olá..."
+               FontSize="28"
+               TextColor="#1c1c1c"
+               FontAttributes="Bold"
+               Margin="5,0,0,0"/>
+
+        <Frame Grid.Row="1" CornerRadius="20" Padding="10" HasShadow="False" BackgroundColor="White" BorderColor="#e0e0e0">
+            <Grid ColumnDefinitions="*, Auto">
+                <Entry x:Name="txtCidade" 
+                       Grid.Column="0"
+                       Placeholder="Digite a cidade (ex: Jaú)"
+                       TextColor="#333"
+                       PlaceholderColor="#999" />
+
+                <ImageButton Grid.Column="1"
+                             Source="clima_tempo.png" 
+                             HeightRequest="40"
+                             WidthRequest="40"
+                             Clicked="OnBuscarClicked"/>
+            </Grid>
+        </Frame>
+
+        <Frame Grid.Row="2" CornerRadius="25" HasShadow="True" BackgroundColor="#6200EE" Padding="20" BorderColor="Transparent">
+            <VerticalStackLayout Spacing="10">
+
+                <Label x:Name="lblCidade" 
+                       Text="---" 
+                       TextColor="White" 
+                       FontSize="24" 
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+
+                <Label x:Name="lblTemperatura" 
+                       Text="--°C" 
+                       TextColor="White" 
+                       FontSize="60" 
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"/>
+
+                <Label x:Name="lblDescricao" 
+                       Text="Aguardando pesquisa..." 
+                       TextColor="#E0E0E0" 
+                       FontSize="18" 
+                       HorizontalOptions="Center"
+                       FontAttributes="Italic"/>
+
+                <Label x:Name="lblChuva" 
+                       Text="Umidade: --%" 
+                       TextColor="White" 
+                       FontSize="14" 
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </Frame>
+
+        <VerticalStackLayout Grid.Row="3" Spacing="10">
+            <Label Text="Histórico Recente" FontAttributes="Bold" TextColor="#555" Margin="5,0"/>
+
+            <CollectionView x:Name="listaHistorico">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,5" Padding="15" CornerRadius="15" BackgroundColor="White" BorderColor="Transparent">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <VerticalStackLayout Grid.Column="0">
+                                    <Label Text="{Binding Cidade}" FontAttributes="Bold" TextColor="#333"/>
+                                    <Label Text="{Binding DataConsulta}" FontSize="12" TextColor="#888"/>
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="{Binding Temperatura}" TextColor="#6200EE" FontAttributes="Bold" VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+
+    </Grid>
 </ContentPage>
