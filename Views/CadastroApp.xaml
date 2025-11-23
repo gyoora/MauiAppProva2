@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiAppProva2.Views.CadastroApp"
+             Title="CadastroApp"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F0F2F5">
+
+    <ScrollView>
+        <VerticalStackLayout Spacing="20" Padding="30" VerticalOptions="Center">
+
+            <Label Text="Criar Conta"
+                   FontSize="30"
+                   TextColor="#1c1c1c"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center"
+                   Margin="0,0,0,20"/>
+
+            <Frame CornerRadius="10" Padding="0" HasShadow="False" BorderColor="#e1e1e1">
+                <Entry x:Name="txtNome" 
+                       Placeholder="Nome completo"
+                       HeightRequest="50"
+                       Margin="15,0"
+                       TextColor="#333"
+                       PlaceholderColor="#aaa"/>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="0" HasShadow="False" BorderColor="#e1e1e1">
+                <DatePicker x:Name="dtpDataNascimento"
+                            Format="dd/MM/yyyy"
+                            HeightRequest="50"
+                            Margin="15,0"
+                            TextColor="#333"/>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="0" HasShadow="False" BorderColor="#e1e1e1">
+                <Entry x:Name="txtEmail"
+                       Placeholder="Seu melhor e-mail"
+                       Keyboard="Email"
+                       HeightRequest="50"
+                       Margin="15,0"
+                       TextColor="#333"
+                       PlaceholderColor="#aaa"/>
+            </Frame>
+
+            <Frame CornerRadius="10" Padding="0" HasShadow="False" BorderColor="#e1e1e1">
+                <Entry x:Name="txtSenha"
+                       Placeholder="Crie uma senha"
+                       IsPassword="True"
+                       HeightRequest="50"
+                       Margin="15,0"
+                       TextColor="#333"
+                       PlaceholderColor="#aaa"/>
+            </Frame>
+
+            <Button Text="CADASTRAR"
+                    Clicked="OnSalvarClicked"
+                    BackgroundColor="#6200EE"
+                    TextColor="White"
+                    CornerRadius="25"
+                    HeightRequest="55"
+                    FontAttributes="Bold"
+                    FontSize="16"
+                    Margin="0,20,0,0">
+                <Button.Shadow>
+                    <Shadow Brush="Black" Offset="0,5" Opacity="0.2" Radius="5"/>
+                </Button.Shadow>
+            </Button>
+
+            <Button Text="Voltar ao Login"
+                    BackgroundColor="Transparent"
+                    TextColor="#6200EE"
+                    FontSize="14"
+                    Clicked="OnVoltarClicked"/>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
